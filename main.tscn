@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://xssee7cl4sl3"]
+
+[ext_resource type="PackedScene" uid="uid://cveia4fku463f" path="res://turret.tscn" id="1_m38ry"]
+[ext_resource type="PackedScene" uid="uid://c4iwutxiqqm50" path="res://tank.tscn" id="2_1gf4m"]
+[ext_resource type="Script" path="res://GearLabel.gd" id="3_2afn5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xkqm7"]
+size = Vector3(15, 0.5, 15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ec3t2"]
+albedo_color = Color(0.168627, 0.278431, 0.0627451, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_62c0s"]
+size = Vector3(15.1781, 0.507718, 15.0368)
+
+[node name="Main" type="Node"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.760124, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_xkqm7")
+surface_material_override/0 = SubResource("StandardMaterial3D_ec3t2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.492419, 0)
+shape = SubResource("BoxShape3D_62c0s")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0402887, 0.999188, 0, -0.999188, 0.0402887, 0, 3.41357, 0)
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.755)
+
+[node name="Tank" parent="." instance=ExtResource("2_1gf4m")]
+tank_acceleration = 0.5
+tank_max_speed = 2
+tank_turning_rate = 0.174533
+
+[node name="Turret" parent="Tank" instance=ExtResource("1_m38ry")]
+
+[node name="User Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GearLabel" type="Label" parent="User Interface"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Gear Label"
+script = ExtResource("3_2afn5")
+
+[node name="SpeedLabel" type="Label" parent="User Interface"]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="gear_changed" from="Tank" to="User Interface/GearLabel" method="_on_tank_gear_changed"]

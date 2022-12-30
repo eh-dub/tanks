@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cveia4fku463f"]
+
+[ext_resource type="Script" path="res://turret.gd" id="1_jsfpv"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3qdab"]
+height = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_j7f83"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 1.5
+radial_segments = 70
+rings = 2
+
+[node name="Turret" type="CharacterBody3D"]
+script = ExtResource("1_jsfpv")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="turret" type="MeshInstance3D" parent="Pivot"]
+mesh = SubResource("CylinderMesh_3qdab")
+
+[node name="CannonPivot" type="Node3D" parent="Pivot"]
+
+[node name="cannon" type="MeshInstance3D" parent="Pivot/CannonPivot"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, -0.00318754, -0.0315265, -1.24937)
+mesh = SubResource("CylinderMesh_j7f83")
+skeleton = NodePath("../..")
